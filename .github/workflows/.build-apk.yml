@@ -9,23 +9,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-    - name: Show files
+    - name: List files at start
       run: ls -la
 
     - name: Install dependencies
       run: |
+        echo "Updating system packages..."
         sudo apt-get update
+        echo "Installing required packages..."
         sudo apt-get install -y python3-pip python3-dev build-essential openjdk-17 zip unzip git wget
+        echo "Upgrading pip..."
         pip install --upgrade pip
+        echo "Installing Buildozer, Kivy, Cython..."
         pip install cython==0.29.36 buildozer==1.4.6 kivy==2.3.0
 
-    - name: Build APK
+    - name: List files after dependencies
+      run: ls -la
+
+    - name: Build APK (verbose)
       run: |
+        echo "Starting APK build..."
         buildozer -v android debug
 
-    - name: Upload APK
+    - name: List files after build
+      run: ls -la bin/
+
+    - name: Upload APK artifact
       uses: actions/upload-artifact@v3
       with:
         name: myapp-apk
