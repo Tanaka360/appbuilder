@@ -11,16 +11,19 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Show files
+      run: ls -la
+
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y python3-pip python3-dev build-essential openjdk-17 zip unzip
+        sudo apt-get install -y python3-pip python3-dev build-essential openjdk-17 zip unzip git wget
         pip install --upgrade pip
         pip install cython==0.29.36 buildozer==1.4.6 kivy==2.3.0
 
     - name: Build APK
       run: |
-        buildozer android debug
+        buildozer -v android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
