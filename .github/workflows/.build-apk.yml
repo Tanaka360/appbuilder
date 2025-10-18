@@ -11,22 +11,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-
     - name: Install dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-pip python3-dev build-essential openjdk-17 zip unzip
-        pip install cython buildozer
+        pip install --upgrade pip
+        pip install cython==0.29.36 buildozer==1.4.6 kivy==2.3.0
 
     - name: Build APK
       run: |
-        cd .
-        buildozer init || true
-        buildozer -v android debug
+        buildozer android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v3
